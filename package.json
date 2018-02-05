@@ -1,0 +1,26 @@
+{
+    "name": "react-formatted-number-input",
+    "version": "0.1.0",
+    "title": "React formatted number input",
+    "author": "Jonathan Persson <persson.jonathan@gmail.com>",
+    "license": "MIT",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jonathanp/react-formatted-number-input.git"
+    },
+    "devDependencies": {
+        "@types/react": "^16.0.36",
+        "react": "^16.2.0",
+        "typescript": "^2.6.2"
+    },
+    "peerDependencies": {
+        "react": ">=16.0.0"
+    },
+    "scripts": {
+        "build": "tsc --project ./ --declaration --outDir dist",
+        "test": "npm run build",
+        "prepare": "npm run build"
+    }
+}
