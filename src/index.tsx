@@ -1,9 +1,8 @@
 import * as React from 'react';
 
 export interface Props {
-    innerRef: any;
-    value: any;
-    onChange: any;
+    value?: number;
+    onChange: (value?: number) => void;
 }
 
 export interface State {
@@ -22,21 +21,33 @@ const defaults: Options = {
     precision: 2,
 };
 
-export const createFormattedNumberInput = (InputComponent: any, options: Options = {}) => {
+export function createFormattedNumberInput<ExternalProps>(InputComponent: any, options: Options = {}): React.ComponentClass<Props & ExternalProps> {
     const opts: any = {
         ...defaults,
         ...options,
     };
 
-    return class FormattedNumberInput extends React.Component<Props, State> {
-        el: any;
-        caretPosition: number;
+    return class FormattedNumberInput extends React.Component<Props & ExternalProps, State> {
+        private el: any;
+        private caretPosition: number = 0;
 
-        state = {
-            value: ''
-        };
+        state: State = { value: '' };
 
-        parse(value: string) {
+        componentWillReceiveProps(nextProps: Readonly<Props & ExternalProps>) {
+            if (nextProps.value !== this.props.value) {
+                this.setState({
+                    value: nextProps.value == null ? '' : String(nextProps.value)
+                });
+            }
+        }
+
+        componentDidUpdate() {
+            if (this.el) {
+                this.el.setSelectionRange(this.caretPosition, this.caretPosition);
+            }
+        }
+
+        private parse(value: string) {
             if (value) {
                 const cleaned = value
                     .replace(/\s/g, '')
@@ -46,7 +57,7 @@ export const createFormattedNumberInput = (InputComponent: any, options: Options
             }
         }
 
-        format(value: string) {
+        private format(value: string) {
             value = value.replace(/[^\d.,]/g, '');
 
             // only keep the first decimal separator
@@ -67,7 +78,7 @@ export const createFormattedNumberInput = (InputComponent: any, options: Options
             return value;
         }
 
-        handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+        private handleChange = (event: React.FormEvent<HTMLInputElement>) => {
             const inputted = event.currentTarget.value;
             const formatted = this.format(inputted);
             const parsed = this.parse(formatted);
@@ -78,17 +89,14 @@ export const createFormattedNumberInput = (InputComponent: any, options: Options
             this.props.onChange(parsed);
         }
 
-        setRef = (el: any) => {
+        private setRef = (el: any) => {
             this.el = el;
-        }
-
-        componentDidUpdate() {
-            this.el.setSelectionRange(this.caretPosition, this.caretPosition);
         }
 
         render() {
             return (
                 <InputComponent
+                    {...this.props}
                     innerRef={this.setRef}
                     value={this.format(this.state.value)}
                     onChange={this.handleChange}
