@@ -31,9 +31,15 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
         private el: any;
         private caretPosition: number = 0;
 
-        state: State = { value: '' };
+        constructor(props: Props & ExternalProps) {
+            super(props);
 
-        componentWillReceiveProps(nextProps: Readonly<Props & ExternalProps>) {
+            this.state = {
+                value: props.value == null ? '' : String(props.value)
+            };
+        }
+
+        componentWillReceiveProps(nextProps: Props & ExternalProps) {
             if (nextProps.value !== this.props.value) {
                 this.setState({
                     value: nextProps.value == null ? '' : String(nextProps.value)
