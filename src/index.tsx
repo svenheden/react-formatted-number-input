@@ -6,7 +6,7 @@ export interface Props {
 }
 
 export interface State {
-    value: string;
+    formattedValue: string;
 }
 
 export interface Options {
@@ -35,14 +35,17 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
             super(props);
 
             this.state = {
-                value: props.value == null ? '' : String(props.value)
+                formattedValue: props.value == null ? '' : this.format(String(props.value))
             };
         }
 
         componentWillReceiveProps(nextProps: Props & ExternalProps) {
-            if (nextProps.value !== this.props.value) {
+            const newFormattedValue = this.format(String(nextProps.value));
+            const currentFormattedValueWithoutTrailingDecimalSeparator = this.state.formattedValue.replace(new RegExp(`${opts.decimalSeparator}$`), '');
+
+            if (newFormattedValue !== currentFormattedValueWithoutTrailingDecimalSeparator) {
                 this.setState({
-                    value: nextProps.value == null ? '' : String(nextProps.value)
+                    formattedValue: nextProps.value == null ? '' : newFormattedValue
                 });
             }
         }
@@ -91,8 +94,10 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
             const delta = formatted.length - inputted.length;
 
             this.caretPosition = Math.max(this.el.selectionEnd + delta, 0);
-            this.setState({ value: formatted });
-            this.props.onChange(parsed);
+
+            this.setState({ formattedValue: formatted }, () => {
+                this.props.onChange(parsed);
+            });
         }
 
         private setRef = (el: any) => {
@@ -104,7 +109,7 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
                 <InputComponent
                     {...this.props}
                     innerRef={this.setRef}
-                    value={this.format(this.state.value)}
+                    value={this.state.formattedValue}
                     onChange={this.handleChange}
                 />
             );
