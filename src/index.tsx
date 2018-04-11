@@ -50,8 +50,8 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
             }
         }
 
-        componentDidUpdate() {
-            if (this.el) {
+        componentDidUpdate(prevProps: Props & ExternalProps) {
+            if (this.el && prevProps.value !== this.props.value) {
                 this.el.setSelectionRange(this.caretPosition, this.caretPosition);
             }
         }
