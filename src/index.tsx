@@ -27,27 +27,51 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
         ...options,
     };
 
+    const parse = (value: string) => {
+        if (value) {
+            const cleaned = value
+                .replace(/\s/g, '')
+                .replace(new RegExp(opts.decimalSeparator), '.');
+    
+            return parseFloat(cleaned);
+        }
+    }
+    
+    const format = (value: string) => {
+        value = value.replace(/[^\d.,]/g, '');
+    
+        // only keep the first decimal separator
+        value = value
+            .replace(/[.,]/, '_')
+            .replace(/[.,]/g, '')
+            .replace(/_/, opts.decimalSeparator);
+    
+        // only keep `opts.precision` fraction digits
+        if (value.indexOf(opts.decimalSeparator) !== -1) {
+            const [integer, fractional] = value.split(opts.decimalSeparator);
+            value = integer + opts.decimalSeparator + fractional.substr(0, opts.precision);
+        }
+
+        // separate thousands
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, opts.thousandSeparator);
+    
+        return value;
+    }
+
     return class FormattedNumberInput extends React.Component<Props & ExternalProps, State> {
         private el: any;
         private caretPosition: number = 0;
+        state: State = { formattedValue: '' };
 
-        constructor(props: Props & ExternalProps) {
-            super(props);
+        static getDerivedStateFromProps(nextProps: Props & ExternalProps, prevState: State) {
+            const formattedValue = format(String(nextProps.value));
+            const prevFormattedValueWithoutTrailingDecimalSeparator = prevState.formattedValue.replace(new RegExp(`${opts.decimalSeparator}$`), '');
 
-            this.state = {
-                formattedValue: props.value == null ? '' : this.format(String(props.value))
-            };
-        }
-
-        componentWillReceiveProps(nextProps: Props & ExternalProps) {
-            const newFormattedValue = this.format(String(nextProps.value));
-            const currentFormattedValueWithoutTrailingDecimalSeparator = this.state.formattedValue.replace(new RegExp(`${opts.decimalSeparator}$`), '');
-
-            if (newFormattedValue !== currentFormattedValueWithoutTrailingDecimalSeparator) {
-                this.setState({
-                    formattedValue: nextProps.value == null ? '' : newFormattedValue
-                });
+            if (nextProps.value != null && formattedValue !== prevFormattedValueWithoutTrailingDecimalSeparator) {
+                return { formattedValue };
             }
+
+            return null;
         }
 
         componentDidUpdate(prevProps: Props & ExternalProps) {
@@ -56,41 +80,10 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
             }
         }
 
-        private parse(value: string) {
-            if (value) {
-                const cleaned = value
-                    .replace(/\s/g, '')
-                    .replace(new RegExp(opts.decimalSeparator), '.');
-
-                return parseFloat(cleaned);
-            }
-        }
-
-        private format(value: string) {
-            value = value.replace(/[^\d.,]/g, '');
-
-            // only keep the first decimal separator
-            value = value
-                .replace(/[.,]/, '_')
-                .replace(/[.,]/g, '')
-                .replace(/_/, opts.decimalSeparator);
-
-            // only keep `opts.precision` fraction digits
-            if (value.indexOf(opts.decimalSeparator) !== -1) {
-                const [integer, fractional] = value.split(opts.decimalSeparator);
-                value = integer + opts.decimalSeparator + fractional.substr(0, opts.precision);
-            }
-
-            // separate thousands
-            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, opts.thousandSeparator);
-
-            return value;
-        }
-
         private handleChange = (event: React.FormEvent<HTMLInputElement>) => {
             const inputted = event.currentTarget.value;
-            const formatted = this.format(inputted);
-            const parsed = this.parse(formatted);
+            const formatted = format(inputted);
+            const parsed = parse(formatted);
             const delta = formatted.length - inputted.length;
 
             this.caretPosition = Math.max(this.el.selectionEnd + delta, 0);
