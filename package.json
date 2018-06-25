@@ -1,6 +1,6 @@
 {
     "name": "react-formatted-number-input",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "title": "React formatted number input",
     "author": "Jonathan Persson <persson.jonathan@gmail.com>",
     "license": "MIT",
@@ -11,9 +11,9 @@
         "url": "https://github.com/jonathanp/react-formatted-number-input.git"
     },
     "devDependencies": {
-        "@types/react": "^16.3.8",
-        "react": "^16.3.1",
-        "typescript": "^2.6.2"
+        "@types/react": "^16.4.1",
+        "react": "^16.4.1",
+        "typescript": "^2.9.2"
     },
     "peerDependencies": {
         "react": ">=16.3.0"

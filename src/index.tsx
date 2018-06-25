@@ -66,10 +66,14 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
         state: State = { formattedValue: '' };
 
         static getDerivedStateFromProps(nextProps: Props & ExternalProps, prevState: State) {
+            if (nextProps.value == null) {
+                return { formattedValue: '' };
+            }
+
             const formattedValue = format(String(nextProps.value));
             const prevFormattedValueWithoutTrailingDecimalSeparator = prevState.formattedValue.replace(decimalSeparatorRegex, '');
 
-            if (nextProps.value != null && formattedValue !== prevFormattedValueWithoutTrailingDecimalSeparator) {
+            if (formattedValue !== prevFormattedValueWithoutTrailingDecimalSeparator) {
                 return { formattedValue };
             }
 
