@@ -27,6 +27,8 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
         ...options,
     };
 
+    const decimalSeparatorRegex = new RegExp(`${opts.decimalSeparator}$`);
+
     const parse = (value: string) => {
         if (value) {
             const cleaned = value
@@ -65,7 +67,7 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
 
         static getDerivedStateFromProps(nextProps: Props & ExternalProps, prevState: State) {
             const formattedValue = format(String(nextProps.value));
-            const prevFormattedValueWithoutTrailingDecimalSeparator = prevState.formattedValue.replace(new RegExp(`${opts.decimalSeparator}$`), '');
+            const prevFormattedValueWithoutTrailingDecimalSeparator = prevState.formattedValue.replace(decimalSeparatorRegex, '');
 
             if (nextProps.value != null && formattedValue !== prevFormattedValueWithoutTrailingDecimalSeparator) {
                 return { formattedValue };
