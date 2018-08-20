@@ -10,9 +10,9 @@ export interface State {
 }
 
 export interface Options {
-    decimalSeparator?: string;
-    thousandSeparator?: string;
-    precision?: number;
+    decimalSeparator: string;
+    thousandSeparator: string;
+    precision: number;
 }
 
 const defaults: Options = {
@@ -21,8 +21,8 @@ const defaults: Options = {
     precision: 2,
 };
 
-export function createFormattedNumberInput<ExternalProps>(InputComponent: any, options: Options = {}): React.ComponentClass<Props & ExternalProps> {
-    const opts: any = {
+export function createFormattedNumberInput<ExternalProps>(InputComponent: any, options: Partial<Options> = {}): React.ComponentClass<Props & ExternalProps> {
+    const opts: Options = {
         ...defaults,
         ...options,
     };
