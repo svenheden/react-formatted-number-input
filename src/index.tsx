@@ -13,12 +13,14 @@ export interface Options {
     decimalSeparator: string;
     thousandSeparator: string;
     precision: number;
+    allowNegativeValues: boolean;
 }
 
 const defaults: Options = {
     decimalSeparator: ',',
     thousandSeparator: ' ',
     precision: 2,
+    allowNegativeValues: false,
 };
 
 export function createFormattedNumberInput<ExternalProps>(InputComponent: any, options: Partial<Options> = {}): React.ComponentClass<Props & ExternalProps> {
@@ -26,8 +28,6 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
         ...defaults,
         ...options,
     };
-
-    const decimalSeparatorRegex = new RegExp(`${opts.decimalSeparator}$`);
 
     const parse = (value: string) => {
         if (value) {
@@ -40,8 +40,8 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
     }
     
     const format = (value: string) => {
-        value = value.replace(/[^\d.,]/g, '');
     
+        value = value.replace(opts.allowNegativeValues ? /[^\d.,-]/g : /[^\d.,]/g, '');
         // only keep the first decimal separator
         value = value
             .replace(/[.,]/, '_')
@@ -71,9 +71,9 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
             }
 
             const formattedValue = format(String(nextProps.value));
-            const prevFormattedValueWithoutTrailingDecimalSeparator = prevState.formattedValue.replace(decimalSeparatorRegex, '');
+            const prevFormattedValueWithoutSpecialCharacters = prevState.formattedValue.replace(/[.,-]/, '');
 
-            if (formattedValue !== prevFormattedValueWithoutTrailingDecimalSeparator) {
+            if (formattedValue !== prevFormattedValueWithoutSpecialCharacters) {
                 return { formattedValue };
             }
 
