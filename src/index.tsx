@@ -23,7 +23,7 @@ const defaults: Options = {
     allowNegativeValues: false,
 };
 
-export function createFormattedNumberInput<ExternalProps>(InputComponent: any, options: Partial<Options> = {}): React.ComponentClass<Props & ExternalProps> {
+export function createFormattedNumberInput<ExternalProps>(InputComponent: any, options: Partial<Options> = {}): React.ComponentClass<ExternalProps | Props> {
     const opts: Options = {
         ...defaults,
         ...options,
