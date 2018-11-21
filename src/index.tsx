@@ -34,14 +34,16 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
             const cleaned = value
                 .replace(/\s/g, '')
                 .replace(new RegExp(opts.decimalSeparator), '.');
+
+            const number = parseFloat(cleaned);
     
-            return parseFloat(cleaned);
+            return !isNaN(number) ? number : undefined;
         }
     }
     
     const format = (value: string) => {
-    
         value = value.replace(opts.allowNegativeValues ? /[^\d.,-]/g : /[^\d.,]/g, '');
+
         // only keep the first decimal separator
         value = value
             .replace(/[.,]/, '_')
@@ -66,10 +68,6 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
         state: State = { formattedValue: '' };
 
         static getDerivedStateFromProps(nextProps: Props & ExternalProps, prevState: State) {
-            if (nextProps.value == null) {
-                return { formattedValue: '' };
-            }
-
             const formattedValue = format(String(nextProps.value));
             const prevFormattedValueWithoutSpecialCharacters = prevState.formattedValue.replace(/[.,-]/, '');
 

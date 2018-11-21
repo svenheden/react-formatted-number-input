@@ -50,6 +50,12 @@ test('It should not allow letters to be inputted', () => {
     expect(input.value).toBe('');
 });
 
+test('It should allow a minus character to be inputted', () => {
+    const { input } = setup();
+    fireEvent.change(input, { target: { value: '-' }});
+    expect(input.value).toBe('-');
+});
+
 test('It should allow negative values', () => {
     const { input } = setup();
     fireEvent.change(input, { target: { value: '-45' }});
