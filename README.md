@@ -4,6 +4,7 @@ A higher order component for formatting values in input elements as numbers
 
 
 [![Build Status][travis-image]][travis-url]
+[![Code Coverage][coverage-image]][coverage-url]
 [![NPM version][npm-image]][npm-url]
 
 
@@ -55,7 +56,9 @@ export default Demo;
 
 MIT © [Jonathan Persson](https://github.com/jonathanp)
 
-[npm-url]: https://npmjs.org/package/react-formatted-number-input
-[npm-image]: https://badge.fury.io/js/react-formatted-number-input.svg
-[travis-image]: https://travis-ci.org/jonathanp/react-formatted-number-input.svg
+[travis-image]: https://img.shields.io/travis/jonathanp/react-formatted-number-input.svg
 [travis-url]: https://travis-ci.org/jonathanp/react-formatted-number-input
+[coverage-image]: https://img.shields.io/codecov/c/gh/jonathanp/react-formatted-number-input.svg
+[coverage-url]: https://codecov.io/gh/jonathanp/react-formatted-number-input
+[npm-image]: https://img.shields.io/npm/v/react-formatted-number-input.svg
+[npm-url]: https://npmjs.org/package/react-formatted-number-input
