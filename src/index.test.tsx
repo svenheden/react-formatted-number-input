@@ -61,3 +61,17 @@ test('It should allow negative values', () => {
     fireEvent.change(input, { target: { value: '-45' }});
     expect(input.value).toBe('-45');
 });
+
+test('It should allow a decimal separator to be inputted', () => {
+    const { input } = setup();
+    fireEvent.change(input, { target: { value: '45' }});
+    fireEvent.change(input, { target: { value: '45,' }});
+    expect(input.value).toBe('45,');
+});
+
+test('It should allow a decimal separator followed by a 0 to be inputted', () => {
+    const { input } = setup();
+    fireEvent.change(input, { target: { value: '45' }});
+    fireEvent.change(input, { target: { value: '45,0' }});
+    expect(input.value).toBe('45,0');
+});

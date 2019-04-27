@@ -69,7 +69,9 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
 
         static getDerivedStateFromProps(nextProps: Props & ExternalProps, prevState: State) {
             const formattedValue = format(String(nextProps.value));
-            const prevFormattedValueWithoutSpecialCharacters = prevState.formattedValue.replace(/[.,-]/, '');
+            const prevFormattedValueWithoutSpecialCharacters = prevState.formattedValue
+                .replace(new RegExp(`${opts.decimalSeparator}0$`), '')
+                .replace(new RegExp(`[${opts.decimalSeparator}-]`), '');
 
             if (formattedValue !== prevFormattedValueWithoutSpecialCharacters) {
                 return { formattedValue };
