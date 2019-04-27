@@ -21,34 +21,17 @@ $ npm install --save react-formatted-number-input
 import React from 'react';
 import { createFormattedNumberInput } from 'react-formatted-number-input';
 
-class YourInputComponent extends React.Component {
-  render() {
-    const { innerRef, ...rest } = this.props;
-
-    return <input ref={innerRef} {...rest} />
-  }
+const YourInputComponent = ({ innerRef, ...rest }) => {
+  return <input ref={innerRef} {...rest} />;
 }
 
 const FormattedNumberInput = createFormattedNumberInput(YourInputComponent, { precision: 2 });
 
-class Demo extends React.Component {
-  state = {};
+const Demo = () => {
+  const [value, setValue] = React.useState();
 
-  handleChange = (value) => {
-    this.setState({ value });
-  }
-
-  render() {
-    return (
-      <FormattedNumberInput
-        value={this.state.value}
-        onChange={this.handleChange}
-      />
-    );
-  }
+  return <FormattedNumberInput value={value} onChange={setValue} />;
 }
-
-export default Demo;
 ```
 
 
