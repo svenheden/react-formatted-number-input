@@ -1,14 +1,14 @@
 {
     "name": "react-formatted-number-input",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "title": "React formatted number input",
-    "author": "Jonathan Persson <persson.jonathan@gmail.com>",
+    "author": "Jonathan Svenheden <jonathan@svenheden.com>",
     "license": "MIT",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "repository": {
         "type": "git",
-        "url": "https://github.com/jonathanp/react-formatted-number-input.git"
+        "url": "https://github.com/svenheden/react-formatted-number-input.git"
     },
     "devDependencies": {
         "@types/jest": "24.0.11",

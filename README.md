@@ -37,11 +37,11 @@ const Demo = () => {
 
 ## License
 
-MIT © [Jonathan Persson](https://github.com/jonathanp)
+MIT © [Jonathan Svenheden](https://github.com/svenheden)
 
-[travis-image]: https://img.shields.io/travis/jonathanp/react-formatted-number-input.svg
-[travis-url]: https://travis-ci.org/jonathanp/react-formatted-number-input
-[coverage-image]: https://img.shields.io/codecov/c/gh/jonathanp/react-formatted-number-input.svg
-[coverage-url]: https://codecov.io/gh/jonathanp/react-formatted-number-input
+[travis-image]: https://img.shields.io/travis/svenheden/react-formatted-number-input.svg
+[travis-url]: https://travis-ci.org/svenheden/react-formatted-number-input
+[coverage-image]: https://img.shields.io/codecov/c/gh/svenheden/react-formatted-number-input.svg
+[coverage-url]: https://codecov.io/gh/svenheden/react-formatted-number-input
 [npm-image]: https://img.shields.io/npm/v/react-formatted-number-input.svg
 [npm-url]: https://npmjs.org/package/react-formatted-number-input
