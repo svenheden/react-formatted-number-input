@@ -63,7 +63,7 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
     }
 
     return class FormattedNumberInput extends React.Component<Props & ExternalProps, State> {
-        private el: any;
+        private ref = React.createRef<HTMLInputElement>();
         private caretPosition: number = 0;
         state: State = { formattedValue: '' };
 
@@ -81,8 +81,8 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
         }
 
         componentDidUpdate(prevProps: Props & ExternalProps) {
-            if (this.el && prevProps.value !== this.props.value) {
-                this.el.setSelectionRange(this.caretPosition, this.caretPosition);
+            if (this.ref.current && prevProps.value !== this.props.value) {
+                this.ref.current.setSelectionRange(this.caretPosition, this.caretPosition);
             }
         }
 
@@ -92,22 +92,20 @@ export function createFormattedNumberInput<ExternalProps>(InputComponent: any, o
             const parsed = parse(formatted);
             const delta = formatted.length - inputted.length;
 
-            this.caretPosition = Math.max(this.el.selectionEnd + delta, 0);
+            this.caretPosition = this.ref.current && this.ref.current.selectionEnd
+                ? Math.max(this.ref.current.selectionEnd + delta, 0)
+                : 0;
 
             this.setState({ formattedValue: formatted }, () => {
                 this.props.onChange(parsed);
             });
         }
 
-        private setRef = (el: any) => {
-            this.el = el;
-        }
-
         render() {
             return (
                 <InputComponent
                     {...this.props}
-                    innerRef={this.setRef}
+                    ref={this.ref}
                     value={this.state.formattedValue}
                     onChange={this.handleChange}
                 />

@@ -2,8 +2,11 @@ import * as React from 'react';
 import { render, fireEvent, cleanup } from '@testing-library/react';
 import { createFormattedNumberInput } from './';
 
-const Input: React.StatelessComponent<any> = ({ innerRef, ...rest }) => <input ref={innerRef} {...rest} />;
-const FormattedNumberInput = createFormattedNumberInput(Input, { allowNegativeValues: true });
+const FancyInput: React.FC<any> = React.forwardRef((props, ref) => {
+    return <div><input ref={ref} {...props} /></div>;
+});
+
+const FormattedNumberInput = createFormattedNumberInput<any>(FancyInput, { allowNegativeValues: true });
 
 class Container extends React.Component {
     state = {
@@ -21,7 +24,7 @@ class Container extends React.Component {
 
 const setup = () => {
     const utils = render(<Container />);
-    const input = utils.container.firstChild as HTMLInputElement;
+    const input = utils.container.querySelector('input')!;
 
     return {
         input,
