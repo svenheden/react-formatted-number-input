@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, fireEvent, cleanup } from 'react-testing-library';
+import { render, fireEvent, cleanup } from '@testing-library/react';
 import { createFormattedNumberInput } from './';
 
 const Input: React.StatelessComponent<any> = ({ innerRef, ...rest }) => <input ref={innerRef} {...rest} />;
